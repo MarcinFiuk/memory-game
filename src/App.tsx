@@ -1,10 +1,12 @@
+import Game from './components/Game/Game';
 import StartGame from './components/StartingGame/StartGame';
 
 function App() {
     return (
-        <main>
-            <StartGame />
-        </main>
+        <>
+            {/* <StartGame /> */}
+            <Game />
+        </>
     );
 }
 
