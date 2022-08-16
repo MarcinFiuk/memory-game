@@ -1,44 +1,49 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
+import { shuffleCards } from '../../helpers/gameHelper';
 import Card from '../Card';
 import cards from '../../data/cards';
 
 function GameSection() {
-    const [isOpen, setIsOpen] = useState<number | null>(null);
-    const toBeChanged = 4;
-
-    const shuffleCards = (arr: JSX.Element[] | number[], gridSize: number) => {
-        const pairNr = (gridSize * gridSize) / 2;
-        const arrWithRequiredNrOfElements = arr.slice(0, pairNr);
-        const shuffledArr = [
-            ...arrWithRequiredNrOfElements,
-            ...arrWithRequiredNrOfElements,
-        ]
-            .sort(() => Math.random() - 0.5)
-            .map((card, index) => ({ card, id: index + 1 }));
-
-        return shuffledArr;
-    };
+    const [openedCards, setOpenedCards] = useState<number[]>([]);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const toBeChanged = 6;
 
     const memoizedArr = useMemo(
         () => shuffleCards(cards.icons, toBeChanged),
-        []
+        [toBeChanged]
     );
+
+    useEffect(() => {
+        if (openedCards.length > 1) {
+            setIsDisabled(true);
+            setTimeout(() => {
+                setIsDisabled(false);
+                setOpenedCards([]);
+            }, 1000);
+        }
+    }, [openedCards]);
+
+    const addCardToCompareHandler = (id: number) => {
+        if (openedCards.some((el) => el === id)) {
+            return;
+        }
+        setOpenedCards(() => {
+            return [...openedCards, id];
+        });
+    };
 
     const numOfColumnsAndRows = (num: 4 | 6) => {
         if (num === 4) {
-            return 'grid-cols-4 grid-rows-4 gap-3 text-4xl';
+            return 'grid-cols-4 grid-rows-4 gap-3 text-4xl md:text-6xl';
         }
         if (num === 6) {
-            return 'grid-cols-6 grid-rows-6 gap-2 text-2xl';
+            return 'grid-cols-6 grid-rows-6 gap-2 text-2xl md:text-5xl';
         }
 
-        return console.warn('unknown number of columns. Either 4 or 6');
-    };
-
-    const turnCard = (id: number) => {
-        console.log(id);
-        setIsOpen(id);
+        return console.warn(
+            'unknown number of columns. Should be either 4 or 6'
+        );
     };
 
     return (
@@ -53,8 +58,9 @@ function GameSection() {
                         <Card
                             key={id}
                             individualId={id}
-                            isTurned={id === isOpen}
-                            setTurnCard={turnCard}
+                            isTurned={openedCards.some((el) => el === id)}
+                            setTurnCard={addCardToCompareHandler}
+                            disableButton={isDisabled}
                         >
                             {card}
                         </Card>
