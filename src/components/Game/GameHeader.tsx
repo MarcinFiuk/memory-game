@@ -37,7 +37,7 @@ function GameHeader() {
                 className={`${stateOfMenu} flex justify-center items-center px-6 md:block md:p-0`}
             >
                 <Overlay />
-                <div className='flex flex-wrap gap-4 w-full p-6 bg-clr-neutral-100 rounded-xl z-50 md:h-full md:flex-nowrap md:max-w-[292px] md:w-80 md:p-0'>
+                <div className='flex flex-wrap gap-4 w-full p-6 bg-clr-neutral-100 rounded-xl z-50  md:h-full md:flex-nowrap md:max-w-[292px] md:w-80 md:p-0'>
                     <Button
                         onClick={closeMenuHandler}
                         customColor='bg-clr-primary-500 hover:bg-clr-accent-500'

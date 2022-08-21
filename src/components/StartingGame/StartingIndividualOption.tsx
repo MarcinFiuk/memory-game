@@ -3,6 +3,7 @@ import Button from '../Button';
 type IndividualOptionProps = {
     title?: string;
     arrWithButtons: string[];
+    onClick?: () => void;
     individualStyle?: {
         mt?: string;
         gap?: string;
@@ -15,6 +16,7 @@ function StartingIndividualOption({
     title,
     arrWithButtons,
     individualStyle,
+    onClick,
 }: IndividualOptionProps) {
     return (
         <div className={`${individualStyle?.mt}`}>
@@ -28,15 +30,10 @@ function StartingIndividualOption({
                             key={index}
                             customColor={individualStyle?.customColor}
                             customFontSize={individualStyle?.customFont}
+                            onClick={onClick}
                         >
                             {content}
                         </Button>
-                        // <button
-                        //     className={`text-base leading-5 text-clr-neutral-100 rounded-3xl w-full py-2.5 ${color} md:text-custom-l ${individualStyle?.customFont} `}
-                        //     key={index}
-                        // >
-                        //     {content}
-                        // </button>
                     );
                 })}
             </div>

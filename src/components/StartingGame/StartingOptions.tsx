@@ -1,6 +1,9 @@
 import StartingIndividualOption from './StartingIndividualOption';
+import { useGameParameters } from '../../context/StartGameParameters';
 
 function StartingOptions() {
+    const { setStartingParameters } = useGameParameters();
+
     return (
         <div className='w-full bg-clr-neutral-100 p-6 rounded-xl md:p-14 md:rounded-[20px] md:max-w-2xl md:mx-auto'>
             <StartingIndividualOption
@@ -24,6 +27,15 @@ function StartingOptions() {
                     mt: 'mt-8',
                     customColor: 'bg-clr-primary-500 hover:bg-clr-accent-500',
                     customFont: 'md:text-4xl',
+                }}
+                onClick={() => {
+                    // NOTE: data should be taken dynamically from other buttons
+                    //NOTE: here is hard coded testing version
+                    setStartingParameters({
+                        type: 'numbers',
+                        numOfPlayers: 1,
+                        grid: 4,
+                    });
                 }}
             />
         </div>
