@@ -3,14 +3,16 @@ import Game from './components/Game/Game';
 import StartGame from './components/StartingGame/StartGame';
 
 function App() {
-    const { startingParameters } = useGameParameters();
+    const {
+        startingParameters: { settings, start },
+    } = useGameParameters();
 
-    const missingParameters = Object.values(startingParameters).includes(null);
-
+    const missingParameters = Object.values(settings).includes(null);
+    console.log(settings);
     return (
         <div className='relative'>
-            {missingParameters && <StartGame />}
-            {!missingParameters && <Game />}
+            {(missingParameters || !start) && <StartGame />}
+            {!missingParameters && start && <Game />}
         </div>
     );
 }

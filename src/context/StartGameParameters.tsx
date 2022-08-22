@@ -3,10 +3,13 @@ import { useState, createContext, useContext, ReactNode } from 'react';
 type ContextProviderProps = {
     children: ReactNode;
 };
-type State = {
-    type: 'numbers' | 'icons' | null;
-    numOfPlayers: 1 | 2 | 3 | 4 | null;
-    grid: 4 | 6 | null;
+export type State = {
+    settings: {
+        type: 'numbers' | 'icons' | null;
+        numOfPlayers: 1 | 2 | 3 | 4 | null;
+        grid: 4 | 6 | null;
+    };
+    start: boolean;
 };
 type Dispatch = (value: State) => void;
 
@@ -16,9 +19,8 @@ const GameContext = createContext<
 
 function GameProvider({ children }: ContextProviderProps) {
     const [startingParameters, setStartingParameters] = useState<State>({
-        type: null,
-        numOfPlayers: null,
-        grid: null,
+        settings: { type: null, numOfPlayers: null, grid: null },
+        start: false,
     });
 
     const value = { startingParameters, setStartingParameters };

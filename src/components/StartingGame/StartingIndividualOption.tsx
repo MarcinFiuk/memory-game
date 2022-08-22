@@ -1,9 +1,10 @@
 import Button from '../Button';
+import { useGameParameters } from '../../context/StartGameParameters';
 
 type IndividualOptionProps = {
     title?: string;
-    arrWithButtons: string[];
-    onClick?: () => void;
+    arrWithButtons: string[] | number[];
+    objKey?: string; //NOTE: not sure if it should be here
     individualStyle?: {
         mt?: string;
         gap?: string;
@@ -14,10 +15,12 @@ type IndividualOptionProps = {
 
 function StartingIndividualOption({
     title,
+    objKey, //NOTE: not sure if it should be here
     arrWithButtons,
     individualStyle,
-    onClick,
 }: IndividualOptionProps) {
+    const { startingParameters, setStartingParameters } = useGameParameters();
+
     return (
         <div className={`${individualStyle?.mt}`}>
             <p className='text-clr-accent-200 text-base leading-5 mb-3 md:text-xl md:leading-6 md:mb-4'>
@@ -30,7 +33,6 @@ function StartingIndividualOption({
                             key={index}
                             customColor={individualStyle?.customColor}
                             customFontSize={individualStyle?.customFont}
-                            onClick={onClick}
                         >
                             {content}
                         </Button>
