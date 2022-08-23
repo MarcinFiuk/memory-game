@@ -3,7 +3,7 @@ import { Settings, useGameParameters } from '../../context/StartGameParameters';
 
 type IndividualOptionProps<T extends keyof Settings> = {
     title?: string;
-    arrWithButtons: Array<Settings[T]>;
+    arrWithButtons: Array<{ text: string; value: Settings[T] }>;
     objKey: T;
     individualStyle?: {
         mt?: string;
@@ -20,7 +20,7 @@ function StartingIndividualOption<T extends keyof Settings>({
     individualStyle,
 }: IndividualOptionProps<T>) {
     const { startingParameters, setSetting } = useGameParameters();
-    const value = startingParameters.settings[objKey]
+    const contextValue = startingParameters.settings[objKey];
 
     return (
         <div className={`${individualStyle?.mt}`}>
@@ -28,16 +28,18 @@ function StartingIndividualOption<T extends keyof Settings>({
                 {title}
             </p>
             <div className={`flex justify-center ${individualStyle?.gap}`}>
-                {arrWithButtons.map((content, index) => {
+                {arrWithButtons.map((button, index) => {
+                    const { text, value } = button;
                     return (
                         <Button
                             key={index}
                             customColor={individualStyle?.customColor}
                             customFontSize={individualStyle?.customFont}
-                            onClick={() => setSetting(objKey, content)}
-                            aria-selected={value === content}
+                            onClick={() => setSetting(objKey, value)}
+                            aria-selected={contextValue === value}
+                            selected={contextValue === value}
                         >
-                            {content}
+                            {text}
                         </Button>
                     );
                 })}

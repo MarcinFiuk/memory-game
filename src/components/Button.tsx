@@ -1,12 +1,11 @@
-import React from 'react';
+import { ComponentPropsWithoutRef } from 'react';
 
-type ButtonProps = {
-    onClick?: () => void;
+type ButtonProps = ComponentPropsWithoutRef<'button'> & {
     style?: React.CSSProperties;
+    selected?: boolean;
     customColor?: string;
     customFontSize?: string;
     customFontColor?: string;
-    children: React.ReactNode;
 };
 
 function Button({
@@ -15,10 +14,15 @@ function Button({
     customFontSize,
     customFontColor,
     children,
+    selected,
 }: ButtonProps) {
-    const bgColor = customColor
-        ? customColor
-        : 'bg-clr-primary-300 hover:bg-clr-accent-400';
+    let bgColor = 'bg-clr-primary-300 hover:bg-clr-accent-400';
+    if (customColor) {
+        bgColor = customColor;
+    }
+    if (selected) {
+        bgColor = 'bg-clr-primary-900 hover:bg-clr-accent-400';
+    }
 
     const fontSize = customFontSize ? customFontSize : 'md:text-custom-l';
     const fontColor = customFontColor
