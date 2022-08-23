@@ -1,10 +1,10 @@
 import Button from '../Button';
-import { useGameParameters } from '../../context/StartGameParameters';
+import { Settings, useGameParameters } from '../../context/StartGameParameters';
 
-type IndividualOptionProps = {
+type IndividualOptionProps<T extends keyof Settings> = {
     title?: string;
-    arrWithButtons: string[] | number[];
-    objKey?: string; //NOTE: not sure if it should be here
+    arrWithButtons: Array<Settings[T]>;
+    objKey: T;
     individualStyle?: {
         mt?: string;
         gap?: string;
@@ -13,13 +13,14 @@ type IndividualOptionProps = {
     };
 };
 
-function StartingIndividualOption({
+function StartingIndividualOption<T extends keyof Settings>({
     title,
-    objKey, //NOTE: not sure if it should be here
+    objKey,
     arrWithButtons,
     individualStyle,
-}: IndividualOptionProps) {
-    const { startingParameters, setStartingParameters } = useGameParameters();
+}: IndividualOptionProps<T>) {
+    const { startingParameters, setSetting } = useGameParameters();
+    const value = startingParameters.settings[objKey]
 
     return (
         <div className={`${individualStyle?.mt}`}>
@@ -33,6 +34,8 @@ function StartingIndividualOption({
                             key={index}
                             customColor={individualStyle?.customColor}
                             customFontSize={individualStyle?.customFont}
+                            onClick={() => setSetting(objKey, content)}
+                            aria-selected={value === content}
                         >
                             {content}
                         </Button>
