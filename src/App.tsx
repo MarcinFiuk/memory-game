@@ -8,7 +8,7 @@ function App() {
     } = useGameParameters();
 
     const missingParameters = Object.values(settings).includes(null);
-    console.log(settings);
+
     return (
         <div className='relative'>
             {(missingParameters || !start) && <StartGame />}

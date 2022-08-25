@@ -1,13 +1,13 @@
 import { useState, createContext, useContext, ReactNode } from 'react';
 
+type ContextProviderProps = {
+    children: ReactNode;
+};
+
 export type Settings = {
     type: 'numbers' | 'icons' | null;
     numOfPlayers: 1 | 2 | 3 | 4 | null;
     grid: 4 | 6 | null;
-}
-
-type ContextProviderProps = {
-    children: ReactNode;
 };
 
 export type State = {
@@ -17,32 +17,53 @@ export type State = {
 
 type Dispatch = (value: State) => void;
 // This uses generics: https://www.typescriptlang.org/docs/handbook/2/generics.html
-type SetSetting = <T extends keyof Settings>(key: T, value: Settings[T]) => void;
-type Context = { startingParameters: State; setStartingParameters: Dispatch; setSetting: SetSetting; startGame: () => void }
+type SetSetting = <T extends keyof Settings>(
+    key: T,
+    value: Settings[T]
+) => void;
 
-const GameContext = createContext<Context| undefined>(undefined);
+type Context = {
+    startingParameters: State;
+    setStartingParameters: Dispatch;
+    setSetting: SetSetting;
+    startGame: () => void;
+};
+
+const GameContext = createContext<Context | undefined>(undefined);
 
 function GameProvider({ children }: ContextProviderProps) {
     const [startingParameters, setStartingParameters] = useState<State>({
-        settings: { type: null, numOfPlayers: null, grid: null },
-        start: false,
+        settings: { type: 'numbers', numOfPlayers: 4, grid: 4 },
+        start: true,
     });
+    //NOTE: object above is made only to avoid setting it each time individually
+    // function GameProvider({ children }: ContextProviderProps) {
+    //     const [startingParameters, setStartingParameters] = useState<State>({
+    //         settings: { type: null, numOfPlayers: null, grid: null },
+    //         start: false,
+    //     });
 
     const setSetting: SetSetting = (key, val) =>
         setStartingParameters({
             ...startingParameters,
             settings: {
                 ...startingParameters.settings,
-                [key]: val
-            }
-        })
+                [key]: val,
+            },
+        });
 
-    const startGame = () => setStartingParameters({
-        ...startingParameters,
-        start: true
-    })
+    const startGame = () =>
+        setStartingParameters({
+            ...startingParameters,
+            start: true,
+        });
 
-    const value = { startingParameters, setStartingParameters, setSetting, startGame };
+    const value = {
+        startingParameters,
+        setStartingParameters,
+        setSetting,
+        startGame,
+    };
 
     return (
         <GameContext.Provider value={value}>{children}</GameContext.Provider>

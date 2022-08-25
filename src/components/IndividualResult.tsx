@@ -1,7 +1,7 @@
 type IndividualResultProps = {
     active?: boolean;
     title: string;
-    score: number;
+    score: number | string;
 };
 
 function IndividualResult({ active, title, score }: IndividualResultProps) {

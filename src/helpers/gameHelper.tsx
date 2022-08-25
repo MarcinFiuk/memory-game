@@ -1,5 +1,5 @@
 export const shuffleCards = (
-    arr: JSX.Element[] | number[],
+    arr: JSX.Element[] | string[],
     gridSize: number
 ) => {
     const pairNr = (gridSize * gridSize) / 2;
