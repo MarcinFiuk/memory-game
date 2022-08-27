@@ -5,9 +5,11 @@ import Card from '../Card';
 import cards from '../../data/cards';
 import { useGameParameters } from '../../context/StartGameParameters';
 
-type GameSectionProps = { pairMatch: (val: boolean) => void };
+type GameSectionProps = {
+    getMoveOutcome: (val: 'yes' | 'no') => void;
+};
 
-function GameSection({ pairMatch }: GameSectionProps) {
+function GameSection({ getMoveOutcome }: GameSectionProps) {
     const [openedCards, setOpenedCards] = useState<number[]>([]);
     const [cardsToCompare, setCardsToCompare] = useState<number[]>([]);
     const [foundCards, setFoundCards] = useState<number[]>([]);
@@ -18,8 +20,10 @@ function GameSection({ pairMatch }: GameSectionProps) {
         },
     } = useGameParameters();
 
+    // console.log('gameSection');
+
     const memoizedArr = useMemo(
-        () => shuffleCards(cards[type ?? 'icons'], grid ?? 4),
+        () => shuffleCards(cards[type!], grid!),
         [grid, type]
     );
 
@@ -37,13 +41,14 @@ function GameSection({ pairMatch }: GameSectionProps) {
         if (cardsToCompare.length > 1) {
             if (cardsToCompare[0] === cardsToCompare[1]) {
                 setFoundCards((prev) => [...prev, cardsToCompare[0]]);
-                pairMatch(true);
+                getMoveOutcome('yes');
             } else {
-                pairMatch(false);
+                getMoveOutcome('no');
             }
+
             setCardsToCompare([]);
         }
-    }, [cardsToCompare, pairMatch]);
+    }, [cardsToCompare, getMoveOutcome]);
 
     const addCardToCompareHandler = (id: number, tag: number) => {
         if (openedCards.some((el) => el === id)) {
